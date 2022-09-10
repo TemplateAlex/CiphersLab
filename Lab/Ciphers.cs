@@ -8,7 +8,7 @@ namespace Lab
 {
     interface ICipher
     {
-        string Encrypt(string word, string key);
+        string Encrypt(string word, string key = "");
     }
 
     class HillCipher: ICipher
@@ -18,7 +18,7 @@ namespace Lab
         int matrixSize;
         int[,] matrix;
         int[] arrKeys;
-        public string Encrypt(string word, string key)
+        public string Encrypt(string word, string key = "")
         {
             sbWord.Append(word);
             sbKey.Append(key);
@@ -88,7 +88,7 @@ namespace Lab
 
     class CaesarCipher: ICipher
     {
-        public string Encrypt(string word, string key)
+        public string Encrypt(string word, string key = "")
         {
             return "";
         }
@@ -96,7 +96,7 @@ namespace Lab
 
     class VisinerCipher: ICipher
     {
-        public string Encrypt(string word, string key)
+        public string Encrypt(string word, string key = "")
         {
             StringBuilder sbWord = new StringBuilder(word);
             StringBuilder sbKey = new StringBuilder(key);
@@ -134,4 +134,18 @@ namespace Lab
         }
     }
 
+    class AtbashCipher: ICipher
+    {
+        public string Encrypt(string word, string key = "")
+        {
+            StringBuilder sbResult = new StringBuilder();
+
+            for(int i = 0; i < word.Length; i++)
+            {
+                sbResult.Append((char)((int)'z' - ((int)word[i] - (int)'a')));
+            }
+
+            return sbResult.ToString();
+        }
+    }
 }

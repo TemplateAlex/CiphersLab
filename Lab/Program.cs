@@ -10,7 +10,10 @@ namespace Lab
             Console.WriteLine(cipher.Encrypt("somethingwe", "something"));
 
             ICipher cipher2 = new VisinerCipher();
-            Console.WriteLine(cipher2.Encrypt("rofl", "sass")); ;
+            Console.WriteLine(cipher2.Encrypt("rofl", "sass"));
+
+            ICipher cipher3 = new AtbashCipher();
+            Console.WriteLine(cipher3.Encrypt("padla"));
         }
     }
 }
