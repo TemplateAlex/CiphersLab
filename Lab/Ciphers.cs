@@ -125,9 +125,12 @@ namespace Lab
                 {
                     modifiedChar = (char)(delta - ((int)'z' - (int)sbWord[i]) + (int)'a');
                 }
+                else modifiedChar = (char)((int)sbWord[i] + delta);
+
+                sbResult.Append(modifiedChar);
             }
                 
-            return sbKey.ToString();
+            return sbResult.ToString();
         }
     }
 
