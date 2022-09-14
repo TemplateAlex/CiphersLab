@@ -9,6 +9,7 @@ namespace Lab
     interface ICipher
     {
         string Encrypt(string word, string key = "");
+        string Encrypt(string word, int key = 1);
     }
 
     class HillCipher: ICipher
@@ -16,8 +17,8 @@ namespace Lab
         StringBuilder sbWord = new StringBuilder();
         StringBuilder sbKey = new StringBuilder();
         int matrixSize;
-        int[,] matrix;
-        int[] arrKeys;
+        int[,]? matrix;
+        int[]? arrKeys;
         public string Encrypt(string word, string key = "")
         {
             sbWord.Append(word);
@@ -84,11 +85,20 @@ namespace Lab
             }
             return sbResult.ToString();
         }
+
+        public string Encrypt(string word, int key = 1)
+        {
+            return "";
+        }
     } 
 
     class CaesarCipher: ICipher
     {
         public string Encrypt(string word, string key = "")
+        {
+            return "";
+        }
+        public string Encrypt(string word, int key = 1)
         {
             return "";
         }
@@ -132,6 +142,11 @@ namespace Lab
                 
             return sbResult.ToString();
         }
+
+        public string Encrypt(string word, int key = 1)
+        {
+            return "";
+        }
     }
 
     class AtbashCipher: ICipher
@@ -146,6 +161,152 @@ namespace Lab
             }
 
             return sbResult.ToString();
+        }
+
+        public string Encrypt(string word, int key = 1)
+        {
+            return "";
+        }
+    }
+
+    class XORCipher: ICipher
+    {
+        public string Encrypt(string word, string key = "")
+        {
+            return "";
+        }
+
+        public string Encrypt(string word, int key = 1)
+        {
+            StringBuilder sbResult = new StringBuilder();
+
+            Console.WriteLine("Binary code for our chars");
+            for(int i = 0; i < word.Length; i++)
+            {
+                Console.WriteLine(this.CreateBinaryValueFromInteger((int)(word[i])));
+            }
+
+            Console.WriteLine("Binary code for changed chars");
+            for(int i = 0; i < word.Length; i++)
+            {
+                int codeASCIIForChangedChar = (int)((int)word[i] ^ key);
+                Console.WriteLine(this.CreateBinaryValueFromInteger(codeASCIIForChangedChar));
+                sbResult.Append((char)codeASCIIForChangedChar);
+            }
+
+            return sbResult.ToString();
+        }
+
+        private string CreateBinaryValueFromInteger(int value)
+        {
+            int degree = 0;
+            StringBuilder sbResult = new StringBuilder();
+
+            while ((int)Math.Pow(2, degree) < value) degree++;
+
+            for(int i = degree; i >= 0; i--)
+            {
+                if (value - (int)Math.Pow(2, i) >= 0)
+                {
+                    value -= (int)Math.Pow(2, i);
+                    sbResult.Append("1");
+                }
+                else sbResult.Append("0");
+            }
+
+            return sbResult.ToString();
+        }
+    }
+
+    class ADFGXCipher: ICipher
+    {
+        public string Encrypt(string word, string key = "")
+        {
+            StringBuilder sbResult = new StringBuilder("");
+            StringBuilder firstStepString = new StringBuilder();
+
+            char[,] cipherMatrix = new char[6, 6] { {'-', 'a', 'd', 'f', 'g', 'x' },
+                                                    {'a', 'f', 'n', 'h', 'e', 'q' },
+                                                    {'d', 'r', 'd', 'z', 'o', 'c' },
+                                                    {'f', 'i', 's', 'a', 'g', 'u' },
+                                                    {'g', 'b', 'v', 'k', 'p', 'w'},
+                                                    {'x', 'x', 'm', 'y', 't', 'l'} };
+
+            for (int i = 0; i < word.Length; i++)
+            {
+                char tmpChar = word[i];
+
+                for (int j = 1; j < 6; j++)
+                {
+                    for (int k = 1; k < 6; k++)
+                    {
+                        if (cipherMatrix[j, k] == tmpChar)
+                        {
+                            firstStepString.Append(cipherMatrix[j, 0]);
+                            firstStepString.Append(cipherMatrix[0, k]);
+                        }
+                    }
+                }
+            }
+
+            int lengthKey = key.Length;
+            int tmpRows = (int)Math.Ceiling((double)firstStepString.Length / (double)lengthKey);
+            int wall = 0;
+
+            char[,] secondCipherMatrix = new char[tmpRows + 1, lengthKey];
+
+            for (int i = 0; i < lengthKey; i++)
+            {
+                secondCipherMatrix[0, i] = key[i];
+            }
+
+            for (int i = 1; i < tmpRows + 1; i++)
+            {
+                for(int j = 0; j < lengthKey; j++)
+                {
+                    if (wall < firstStepString.Length) secondCipherMatrix[i, j] = firstStepString[wall];
+                    else secondCipherMatrix[i, j] = 'x';
+                    wall++;
+                }
+            }
+
+            bool flag = true;
+
+            while(flag)
+            {
+                flag = false;
+
+                for (int i = 1; i < lengthKey; i++)
+                {
+                    if ((int)secondCipherMatrix[0, i - 1] > (int)secondCipherMatrix[0, i])
+                    {
+                        for (int j = 0; j < tmpRows + 1; j++)
+                        {
+                            char tmp = secondCipherMatrix[j, i - 1];
+                            secondCipherMatrix[j, i - 1] = secondCipherMatrix[j, i];
+                            secondCipherMatrix[j, i] = tmp;
+                        }
+                        flag = true;
+                    }
+                }
+
+            }
+
+            
+            for (int i = 0; i < lengthKey; i++)
+            {
+                for (int j = 1; j < tmpRows + 1; j++)
+                {
+                    sbResult.Append(secondCipherMatrix[j, i]);
+                }
+            }
+
+            return sbResult.ToString();
+        }
+
+        public string Encrypt(string word, int key = 1)
+        {
+            return "";
         }
     }
 }
