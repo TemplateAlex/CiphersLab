@@ -6,10 +6,38 @@ using System.Threading.Tasks;
 
 namespace Lab
 {
+    class ContextForCiphers
+    {
+        private ICipher _cipher;
+
+        public ContextForCiphers()
+        {
+
+        }
+
+        public void SetCipher(ICipher cipher)
+        {
+            this._cipher = cipher;
+        }
+        
+        public string CallEncrypt(string word, string key = "")
+        {
+            if (_cipher == null) throw new Exception("Context don't find cipher object");
+
+            return _cipher.Encrypt(word, key);
+        }
+
+        public string CallEncrypt(string word, int key = 1)
+        {
+            if (_cipher == null) throw new Exception("Context don't find cipher object");
+
+            return _cipher.Encrypt(word, key);
+        }
+    }
     interface ICipher
     {
-        string Encrypt(string word, string key = "");
-        string Encrypt(string word, int key = 1);
+        string Encrypt(string word, string key);
+        string Encrypt(string word, int key);
     }
 
     class HillCipher: ICipher
@@ -19,7 +47,7 @@ namespace Lab
         int matrixSize;
         int[,]? matrix;
         int[]? arrKeys;
-        public string Encrypt(string word, string key = "")
+        public string Encrypt(string word, string key)
         {
             sbWord.Append(word);
             sbKey.Append(key);
@@ -86,7 +114,7 @@ namespace Lab
             return sbResult.ToString();
         }
 
-        public string Encrypt(string word, int key = 1)
+        public string Encrypt(string word, int key)
         {
             return "";
         }
@@ -94,11 +122,11 @@ namespace Lab
 
     class CaesarCipher: ICipher
     {
-        public string Encrypt(string word, string key = "")
+        public string Encrypt(string word, string key)
         {
             return "";
         }
-        public string Encrypt(string word, int key = 1)
+        public string Encrypt(string word, int key)
         {
             return "";
         }
@@ -106,7 +134,7 @@ namespace Lab
 
     class VisinerCipher: ICipher
     {
-        public string Encrypt(string word, string key = "")
+        public string Encrypt(string word, string key)
         {
             StringBuilder sbWord = new StringBuilder(word);
             StringBuilder sbKey = new StringBuilder(key);
@@ -143,7 +171,7 @@ namespace Lab
             return sbResult.ToString();
         }
 
-        public string Encrypt(string word, int key = 1)
+        public string Encrypt(string word, int key)
         {
             return "";
         }
@@ -151,7 +179,7 @@ namespace Lab
 
     class AtbashCipher: ICipher
     {
-        public string Encrypt(string word, string key = "")
+        public string Encrypt(string word, string key)
         {
             StringBuilder sbResult = new StringBuilder();
 
@@ -163,7 +191,7 @@ namespace Lab
             return sbResult.ToString();
         }
 
-        public string Encrypt(string word, int key = 1)
+        public string Encrypt(string word, int key)
         {
             return "";
         }
@@ -171,12 +199,12 @@ namespace Lab
 
     class XORCipher: ICipher
     {
-        public string Encrypt(string word, string key = "")
+        public string Encrypt(string word, string key)
         {
             return "";
         }
 
-        public string Encrypt(string word, int key = 1)
+        public string Encrypt(string word, int key)
         {
             StringBuilder sbResult = new StringBuilder();
 
@@ -220,7 +248,7 @@ namespace Lab
 
     class ADFGXCipher: ICipher
     {
-        public string Encrypt(string word, string key = "")
+        public string Encrypt(string word, string key)
         {
             StringBuilder sbResult = new StringBuilder("");
             StringBuilder firstStepString = new StringBuilder();
@@ -304,7 +332,7 @@ namespace Lab
             return sbResult.ToString();
         }
 
-        public string Encrypt(string word, int key = 1)
+        public string Encrypt(string word, int key)
         {
             return "";
         }

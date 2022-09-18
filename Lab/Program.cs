@@ -6,25 +6,27 @@ namespace Lab
     {
         public static void Main()
         {
+            ContextForCiphers contextForCiphers = new ContextForCiphers();
+
             Console.WriteLine("---Hill Cipher---");
-            ICipher cipher = new HillCipher();
-            Console.WriteLine(cipher.Encrypt("somethingwe", "something"));
+            contextForCiphers.SetCipher(new HillCipher());
+            Console.WriteLine(contextForCiphers.CallEncrypt("Somethingwe", "something"));
 
             Console.WriteLine("\n---Visiner Cipher---");
-            ICipher cipher2 = new VisinerCipher();
-            Console.WriteLine(cipher2.Encrypt("rofl", "sass"));
+            contextForCiphers.SetCipher(new VisinerCipher());
+            Console.WriteLine(contextForCiphers.CallEncrypt("rofl", "sass"));
 
             Console.WriteLine("\n---Atbash Cipher---");
-            ICipher cipher3 = new AtbashCipher();
-            Console.WriteLine(cipher3.Encrypt("padla", ""));
+            contextForCiphers.SetCipher(new AtbashCipher());
+            Console.WriteLine(contextForCiphers.CallEncrypt("minions", ""));
 
             Console.WriteLine("\n---XOR Cipher---");
-            ICipher cipher4 = new XORCipher();
-            Console.WriteLine(cipher4.Encrypt("saaaaaaas", 3));
+            contextForCiphers.SetCipher(new XORCipher());
+            Console.WriteLine(contextForCiphers.CallEncrypt("saaaaaaaas", 3));
 
             Console.WriteLine("\n---ADFGX Cipher---");
-            ICipher cipher5 = new ADFGXCipher();
-            Console.WriteLine(cipher5.Encrypt("attackatdawn", "battle"));
+            contextForCiphers.SetCipher(new ADFGXCipher());
+            Console.WriteLine(contextForCiphers.CallEncrypt("attackatdawn", "battle"));
         }
     }
 }
